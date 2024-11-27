@@ -1,5 +1,6 @@
 package com.edu.cibertec.sistema_backoffice_lym.service.impl;
 
+import com.edu.cibertec.sistema_backoffice_lym.dto.FilmDetailDto;
 import com.edu.cibertec.sistema_backoffice_lym.dto.FilmDto;
 import com.edu.cibertec.sistema_backoffice_lym.entity.Film;
 import com.edu.cibertec.sistema_backoffice_lym.repository.FilmRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MaintenanceServiceImpl implements MaintenanceService {
@@ -31,9 +33,33 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                     film.getLanguage().getName(),
                     film.getRentalDuration(),
                     film.getRentalRate());
+            films.add(filmDto);
         });
 
 
         return films ;
+    }
+
+    //nuevo emtodo apra poder implementar mi dto
+    @Override
+    public FilmDetailDto findFilmById(int id) {
+
+        Optional<Film> optional = filmRepository.findById(id);
+        return optional.map(    //map es para manipular, fue creado para poder controlar el null//encapsulador
+                film -> new FilmDetailDto(film.getFilmId(), //si esta presente se devuelve los datos
+                        film.getTitle(),
+                        film.getDescription(),
+                        film.getReleaseYear(),
+                        film.getLanguage().getLanguageId(),
+                        film.getLanguage().getName(),
+                        film.getRentalDuration(),
+                        film.getRentalRate(),
+                        film.getLength(),
+                        film.getReplacementCost(),
+                        film.getRating(),
+                        film.getSpecialFeatures(),
+                        film.getLastUpdate())
+        ).orElse(null); //si no esta presencte el optional se devuelve null
+
     }
 }
