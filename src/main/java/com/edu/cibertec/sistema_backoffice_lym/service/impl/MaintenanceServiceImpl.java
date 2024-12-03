@@ -6,9 +6,11 @@ import com.edu.cibertec.sistema_backoffice_lym.entity.Film;
 import com.edu.cibertec.sistema_backoffice_lym.repository.FilmRepository;
 import com.edu.cibertec.sistema_backoffice_lym.service.MaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +63,26 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                         film.getLastUpdate())
         ).orElse(null); //si no esta presencte el optional se devuelve null
 
+    }
+
+    @Override
+    public Boolean updateFilm(FilmDetailDto filmDetailDto) {
+        Optional<Film> optional = filmRepository.findById(filmDetailDto.filmId());
+        return optional.map(
+                film -> {
+                    film.setTitle(filmDetailDto.title());
+                    film.setDescription(filmDetailDto.description());
+                    film.setReleaseYear(filmDetailDto.releaseYear());
+                    film.setRentalDuration(filmDetailDto.rentalDuration());
+                    film.setRentalRate(filmDetailDto.rentalRate());
+                    film.setLength(filmDetailDto.length());
+                    film.setReplacementCost(filmDetailDto.replacementCost());
+                    film.setRating(filmDetailDto.rating());
+                    film.setSpecialFeatures(filmDetailDto.specialFeatures());
+                    film.setLastUpdate(new Date());
+                    filmRepository.save(film);
+                    return true;
+                }
+        ).orElse(false);
     }
 }

@@ -11,7 +11,7 @@ public record FilmDetailDto(Integer filmId,
                             Integer rentalDuration,
                             Double rentalRate,
                             Integer length,
-                            Double replaceCost,
+                            Double replacementCost,
                             String rating,
                             String specialFeatures,
                             Date lastUpdate) {

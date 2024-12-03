@@ -10,4 +10,6 @@ public interface MaintenanceService {
 
     List<FilmDto> findAllFilms();
     FilmDetailDto findFilmById(int id); //buscar por el id
+
+    Boolean updateFilm(FilmDetailDto filmDetailDto);
 }

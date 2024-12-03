@@ -6,9 +6,7 @@ import com.edu.cibertec.sistema_backoffice_lym.service.MaintenanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +36,20 @@ public class MaintenanceController {
         model.addAttribute("film",filmDetailDto);
         return "maintenance_detail"; //siempre devuelve una pagina
     }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model){    //el model, es la calse que va apermitir transportar
+
+        FilmDetailDto filmDetailDto = maintenanceService.findFilmById(id);
+        model.addAttribute("film",filmDetailDto);
+        return "maintenance_edit"; //siempre devuelve una pagina
+    }
+
+    @PostMapping("/edit-confirm")
+    public String editConfirm(@ModelAttribute FilmDetailDto filmDetailDto, Model model){ //para decir que es un atributo de modelo.. cada que se pone object se sabe que es una
+        maintenanceService.updateFilm(filmDetailDto);
+        return "redirect:/maintenance/start"; //siempre devuelve una pagina
+    }
+
 
 }
